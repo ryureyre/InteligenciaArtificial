@@ -4,6 +4,18 @@ public class Arbol {
 	public Arbol() {
 	}
 
+	public void ImprimirArbol(Nodo n) {
+		if (n != null) {
+			n.imprimir();
+			ImprimirArbol(n.izq);
+			ImprimirArbol(n.der);
+		}
+	}
+
+	public void ImprimirArbol() {
+		this.ImprimirArbol(this.raiz);
+	}
+
 	public Nodo busqueda(int busqueda) {
 		System.out.println("Se buscara el elemento " + busqueda + " en el arbol");
 		Nodo n = existe(this.raiz, busqueda);
@@ -23,14 +35,6 @@ public class Arbol {
 		}
 	}
 
-	public void insertar(int dato) {
-		if (this.raiz == null) {
-			this.raiz = new Nodo(dato);
-		} else {
-			this.insertar(this.raiz, dato);
-		}
-	}
-
 	private void insertar(Nodo padre, int dato) {
 		if (dato < padre.dato) {
 			if (padre.izq == null) {
@@ -47,15 +51,12 @@ public class Arbol {
 		}
 	}
 
-	public void ImprimirArbol(Nodo n) {
-		if (n != null) {
-			n.imprimir();
-			ImprimirArbol(n.izq);
-			ImprimirArbol(n.der);
+	public void insertar(int dato) {
+		if (this.raiz == null) {
+			this.raiz = new Nodo(dato);
+		} else {
+			this.insertar(this.raiz, dato);
 		}
 	}
 
-	public void ImprimirArbol() {
-		this.ImprimirArbol(this.raiz);
-	}
 }
