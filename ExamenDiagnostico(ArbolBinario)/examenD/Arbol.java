@@ -1,3 +1,6 @@
+package examenD;
+
+
 public class Arbol {
     private Nodo raiz;
 

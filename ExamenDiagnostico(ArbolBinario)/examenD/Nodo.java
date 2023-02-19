@@ -1,3 +1,5 @@
+package examenD;
+
 public class Nodo {
     int dato;
 	Nodo izq, der;
