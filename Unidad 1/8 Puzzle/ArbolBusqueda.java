@@ -22,8 +22,8 @@ public class ArbolBusqueda {
     // Busqueda por Anchura
     public void busquedaPorAnchura() {
         Nodo nodoActual = raiz;
-        Collection<String> estadosVisitados = new ArrayList();
-        Queue<Nodo> estadosPorVisitar = new LinkedList();
+        Collection<String> estadosVisitados = new ArrayList<String>();
+        Queue<Nodo> estadosPorVisitar = new LinkedList<Nodo>();
         while (!nodoActual.getEstado().equals(objetivo)) {
             estadosVisitados.add(nodoActual.getEstado());
             // Generar a los Nodos Hijos
@@ -50,8 +50,8 @@ public class ArbolBusqueda {
 
     public void busquedaPorProfundidad() {
         Nodo nodoActual = raiz;
-        Collection<String> estadosVisitados = new ArrayList();
-        Stack<Nodo> estadosPorVisitar = new Stack();
+        Collection<String> estadosVisitados = new ArrayList<String>();
+        Stack<Nodo> estadosPorVisitar = new Stack<Nodo>();
         while (!nodoActual.getEstado().equals(objetivo)) {
             estadosVisitados.add(nodoActual.getEstado());
             // Generar a los Nodos Hijos
