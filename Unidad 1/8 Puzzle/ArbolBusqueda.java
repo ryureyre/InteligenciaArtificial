@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -96,4 +97,61 @@ public class ArbolBusqueda {
         System.out.println(aux.charAt(6) + " | " + aux.charAt(7) + " | " + aux.charAt(8));
         System.out.println();
     }
+
+    public void busquedaPorAnchuraConHeuristica() {
+        Nodo nodoActual = raiz;
+        Collection<String> estadosVisitados = new ArrayList<String>();
+        PriorityQueue<Nodo> estadosPorVisitar = new PriorityQueue<Nodo>();
+        while (!nodoActual.getEstado().equals(objetivo)) {
+            estadosVisitados.add(nodoActual.getEstado());
+            // Generar a los Nodos Hijos
+            Collection<String> hijos = nodoActual.generaHijos(); // <-- Cada Equipo tiene que ingeniarselas para crear
+                                                                 // este metodo!
+            for (String hijo : hijos) {
+                if (!estadosVisitados.contains(hijo)) {
+                    // System.out.println("---Metiendo nuevo Nodo");
+                    // Crear nuevo Nodo.
+                    Nodo nHijo = new Nodo(hijo);
+                    nHijo.prof = nodoActual.prof + 1;
+                    nHijo.costo = heuristica2(nHijo.getEstado(), objetivo);
+                    nHijo.setPadre(nodoActual);
+                    estadosPorVisitar.add(nHijo);
+                }
+            }
+            nodoActual = estadosPorVisitar.poll();
+        }
+        System.out.println(estadosVisitados.size());
+        System.out.println("YA SE ENCONTRO EL NODO OBJETIVO");
+        System.out.println(nodoActual.getEstado() + "\n");
+
+        // System.out.println("Se imprimiran los pasos para conseguir el estado final");
+        // camino(nodoActual, new String());
+    }
+
+    public int heuristica1(String actual, String objetivo) {
+        int cont = 0;
+        for(int i=0; i<actual.length(); i++){
+            if (actual.charAt(i) != objetivo.charAt(i)){
+                cont++ ;
+            }
+        }
+        return cont;
+    }
+
+    //Nosirbe
+    public int heuristica2(String actual, String objetivo) {
+        int a,b,cont = 0;
+        for(int i=0; i<actual.length(); i++){
+            a = Character.getNumericValue(actual.charAt(i));
+            if (actual.charAt(i) == ' ')
+                a = 0;
+            b = Character.getNumericValue(objetivo.charAt(i));
+            if (objetivo.charAt(i) == ' ')
+                b = 0;
+            cont = cont + (a-b) ;
+        }
+        return cont;
+    }
+
+
 }

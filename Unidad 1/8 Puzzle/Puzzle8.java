@@ -8,7 +8,8 @@ public class Puzzle8 {
         //Instanciar el arbol
         ArbolBusqueda a = new ArbolBusqueda(new Nodo(estadoInicial), estadoFinal);
         //Ejecuta la busqueda
-        a.busquedaPorAnchura();
+        // a.busquedaPorAnchura();
+        a.busquedaPorAnchuraConHeuristica();
         //a.busquedaPorProfundidad();
         //Imprime movimientos
         

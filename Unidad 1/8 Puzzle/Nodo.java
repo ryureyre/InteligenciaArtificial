@@ -5,11 +5,12 @@ import java.util.Collection;
  *
  * @author Mario R�os
  */
-public class Nodo {
+public class Nodo implements Comparable<Nodo> {
     private String estado;
     private Collection<Nodo> hijos;
     Nodo padre;
 	int prof;
+	int costo;
     
     public Nodo(String estado)
     {
@@ -38,6 +39,11 @@ public class Nodo {
         this.padre = padre;
     }
 
+	@Override
+	public int compareTo(Nodo objetivo) {
+		return this.costo>objetivo.costo ? 1 : this.costo < objetivo.costo ? -1 : 0  ;
+	}
+    
     public Collection<String> generaHijos() {
         //|0|1|2|
         //|3|4|5|   Indices
@@ -179,6 +185,6 @@ public class Nodo {
     {
         //TODO tarea para ustedes xD
     }
-    
-    
+
+	
 }
