@@ -179,12 +179,5 @@ public class Nodo implements Comparable<Nodo> {
         
         return hijosGenerados;
     }
-    
-    
-    public void imprimeSolucion()//Parametros????
-    {
-        //TODO tarea para ustedes xD
-    }
 
-	
 }

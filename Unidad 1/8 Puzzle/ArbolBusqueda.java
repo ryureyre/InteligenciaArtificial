@@ -5,14 +5,14 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
 
-/**
- *
- * @author Mario R�os
- */
 public class ArbolBusqueda {
 
     Nodo raiz;
     String objetivo;
+
+    Nodo FinalH1,FinalH2,FinalH3;
+    long TiempoH1,TiempoH2,TiempoH3;
+
 
     public ArbolBusqueda(Nodo raiz, String objetivo) {
         this.raiz = raiz;
@@ -44,7 +44,7 @@ public class ArbolBusqueda {
         }
         System.out.println("YA SE ENCONTRO EL NODO OBJETIVO");
         System.out.println(nodoActual.getEstado() + "\n");
-
+        System.out.println(nodoActual.prof + "\n");
         System.out.println("Se imprimiran los pasos para conseguir el estado final");
         camino(nodoActual, new String());
     }
@@ -72,7 +72,7 @@ public class ArbolBusqueda {
         }
         System.out.println("YA SE ENCONTRO EL NODO OBJETIVO");
         System.out.println(nodoActual.getEstado());
-        System.out.println(nodoActual.prof);
+        System.out.println(nodoActual.prof+ "\n");
 
         System.out.println("Se imprimiran los pasos para conseguir el estado final");
         camino(nodoActual, new String());
@@ -87,6 +87,7 @@ public class ArbolBusqueda {
         return pasosNodos;
     } */
 
+    //Metodo para imprimir el camino del nodo final
     public void camino(Nodo nodo, String aux) {
         if (nodo.padre != null) {
             camino(nodo.padre, aux);
@@ -98,7 +99,9 @@ public class ArbolBusqueda {
         System.out.println();
     }
 
-    public void busquedaPorAnchuraConHeuristica() {
+    public void busquedaPorAnchuraConHeuristica(int op) {
+        long tInicio, tFinal;
+        tInicio = System.currentTimeMillis();
         Nodo nodoActual = raiz;
         Collection<String> estadosVisitados = new ArrayList<String>();
         PriorityQueue<Nodo> estadosPorVisitar = new PriorityQueue<Nodo>();
@@ -113,19 +116,45 @@ public class ArbolBusqueda {
                     // Crear nuevo Nodo.
                     Nodo nHijo = new Nodo(hijo);
                     nHijo.prof = nodoActual.prof + 1;
-                    nHijo.costo = heuristica2(nHijo.getEstado(), objetivo);
+                    switch (op) {
+                        case 1:
+                            nHijo.costo = heuristica1(nHijo.getEstado(), objetivo);                            
+                            break;
+                        case 2:
+                            nHijo.costo = heuristica2(nHijo.getEstado(), objetivo);
+                            break;
+                        case 3:
+                            nHijo.costo = heuristica3(nHijo.getEstado(), objetivo);
+                            break;
+                    }
                     nHijo.setPadre(nodoActual);
                     estadosPorVisitar.add(nHijo);
                 }
             }
             nodoActual = estadosPorVisitar.poll();
         }
+        tFinal = System.currentTimeMillis();
+        switch (op) {
+            case 1:
+                this.TiempoH1 = tFinal - tInicio;
+                this.FinalH1 = nodoActual;
+                break;
+            case 2:
+                this.TiempoH2 = tFinal - tInicio;
+                this.FinalH2 = nodoActual;
+                break;
+            case 3:
+                this.TiempoH3 = tFinal - tInicio;
+                this.FinalH3 = nodoActual;
+                break;
+        }
         System.out.println(estadosVisitados.size());
         System.out.println("YA SE ENCONTRO EL NODO OBJETIVO");
         System.out.println(nodoActual.getEstado() + "\n");
+        System.out.println(nodoActual.prof+ "\n");
 
-        // System.out.println("Se imprimiran los pasos para conseguir el estado final");
-        // camino(nodoActual, new String());
+        System.out.println("Se imprimiran los pasos para conseguir el estado final");
+        camino(nodoActual, new String());
     }
 
     public int heuristica1(String actual, String objetivo) {
@@ -137,8 +166,7 @@ public class ArbolBusqueda {
         }
         return cont;
     }
-
-    //Nosirbe
+    //Nosirbe                           Yasirbe
     public int heuristica2(String actual, String objetivo) {
         int a,b,cont = 0;
         for(int i=0; i<actual.length(); i++){
@@ -148,10 +176,46 @@ public class ArbolBusqueda {
             b = Character.getNumericValue(objetivo.charAt(i));
             if (objetivo.charAt(i) == ' ')
                 b = 0;
-            cont = cont + (a-b) ;
+            cont = cont + Math.abs(a-b) ;
+    }
+        return cont;
+    }
+
+    public int heuristica3(String actual, String objetivo) {
+        int cont = 0;
+        for(int i=0; i<actual.length(); i++){
+            for(int j=0; j<actual.length(); j++){
+                if (actual.charAt(i) == objetivo.charAt(j)){
+                    cont += Math.abs(i-j);
+                    break;
+                }
+            }
         }
         return cont;
     }
 
-
+    public void mostarResultados(){
+        System.out.println("\n\n\t\tResultados de las busquedas");
+        System.out.println("Heuristica 1:");
+        if (this.FinalH1 == null)
+            System.out.println("\tsin datos");
+        else{
+            System.out.println("Nivel de nodo final: "+FinalH1.prof);
+            System.out.println("Tiempo en realizar: "+TiempoH1 +" milisegundos\n");    
+        }
+        System.out.println("Heuristica 2:");
+        if (this.FinalH2 == null)
+            System.out.println("\tsin datos");
+        else{
+            System.out.println("Nivel de nodo final: "+FinalH2.prof);
+            System.out.println("Tiempo en realizar: "+TiempoH2 +" milisegundos\n");    
+        }
+        System.out.println("Heuristica 3:");
+        if (this.FinalH3 == null)
+            System.out.println("\tsin datos");
+        else{
+            System.out.println("Nivel de nodo final: "+FinalH3.prof);
+            System.out.println("Tiempo en realizar: "+TiempoH3 +" milisegundos\n");    
+        }
+    }
 }
