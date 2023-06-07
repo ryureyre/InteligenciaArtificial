@@ -1,0 +1,53 @@
+FUNCTION_BLOCK reglas
+
+VAR_INPUT
+    promedio : REAL; // Calificación promedio
+    asistencia : REAL; // Porcentaje de asistencia
+END_VAR
+
+VAR_OUTPUT
+    evaluacion : REAL; // Evaluación
+END_VAR
+
+FUZZIFY promedio
+    TERM mala := (0, 1) (7, 0);
+    TERM buena := (6, 0) (7, 1) (8, 1) (9.5, 0);
+    TERM excelente :=  (9, 0) (10, 1);
+END_FUZZIFY
+
+FUZZIFY asistencia
+    TERM baja := (0, 1) (60, 0) (70, 0);
+    TERM media := (50, 0) (60, 1) (75, 1) (85, 0);
+    TERM alta := (80, 0) (100, 1);
+END_FUZZIFY
+
+DEFUZZIFY evaluacion
+    TERM mala := (0, 0) (4, 1) (6, 0);
+    TERM regular :=  (5, 0) (6, 1) (7, 0);
+    TERM buena := (7, 0) (8, 1) (9, 0);
+    TERM excelente := (9, 0) (9.5, 1) (10, 0);
+    METHOD : COG;
+END_DEFUZZIFY
+
+RULEBLOCK reglas_evaluacion
+    AND : MIN;
+    ACT : MIN;
+    ACCU : MAX;
+
+    RULE 1 : IF promedio IS mala AND asistencia IS baja THEN evaluacion IS mala;
+    RULE 2 : IF promedio IS mala AND asistencia IS media THEN evaluacion IS mala;
+    RULE 3 : IF promedio IS mala AND asistencia IS alta THEN evaluacion IS regular;
+
+    RULE 4 : IF promedio IS buena AND asistencia IS baja THEN evaluacion IS regular;
+    RULE 5 : IF promedio IS buena AND asistencia IS media THEN evaluacion IS buena;
+    RULE 6 : IF promedio IS buena AND asistencia IS alta THEN evaluacion IS buena;
+
+    RULE 7 : IF promedio IS excelente AND asistencia IS baja THEN evaluacion IS buena;
+    RULE 8 : IF promedio IS excelente AND asistencia IS media THEN evaluacion IS excelente;
+    RULE 9 : IF promedio IS excelente AND asistencia IS alta THEN evaluacion IS excelente;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
+
+java -jar jFuzzyLogic.jar reglas.fcl

@@ -2,18 +2,22 @@ import java.util.Scanner;
 
 public class Puzzle8 {
 
-    public static String estadoInicial = "12578 346";
+    public static String estadoInicialFacil = "134862 75";
+    public static String estadoInicialDificil = "8 2461357";
+    
     public static String estadoFinal = "12345678 ";
     
     public static void main(String[] args) {
         //Instanciar el arbol
-        ArbolBusqueda a = new ArbolBusqueda(new Nodo(estadoInicial), estadoFinal);
+        // ArbolBusqueda a = new ArbolBusqueda(new Nodo(estadoInicialFacil), estadoFinal);
+        
+        ArbolBusqueda a = new ArbolBusqueda(new Nodo(estadoInicialFacil), estadoFinal);
         //Ejecuta la busqueda
         // a.busquedaPorAnchura();
         Scanner scan = new Scanner(System.in);
         int op;
         do {
-            System.out.println("Menu de heuristicas para busqueda por anchura");
+            System.out.println("\n\n\tMenu de heuristicas para busqueda por anchura");
             System.out.println("1.- Posiciones erroneas");
             System.out.println("2.- Diferencia absoluta entre valores");
             System.out.println("3.- Diferencia entre posiciones");
